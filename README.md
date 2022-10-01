@@ -7,4 +7,4 @@ Simplify usage of [`awsedl.sh`](awsedl.sh) with an alias like the one below, whi
 alias awsedl='sh awsedl.sh > ./creds && mv ./creds ~/.aws/credentials'
 ```
 
-Warning: The alias above will recklessly overwrite your existing credentials file with outputs from `awsedl.sh`. Be careful.
+Warning: this alias recklessly overwrites your existing credentials file with the outputs of `awsedl.sh`.
