@@ -2,7 +2,7 @@
 profile=${2:-edl}
 if grep -q 'urs.earthdata.nasa.gov' ~/.netrc 
 then
-    touch ~/.aws/credentials && \
+    mkdir -p ~/.aws && touch ~/.aws/credentials && \
         printf "$(sed -e "/\[${profile}\]/,+6d" "${HOME}/.aws/credentials")"
     printf "\n\n[${profile}]\noutput = json\nregion = us-west-2\n"
     wget --auth-no-challenge -q -O - ${1:-https://archive.podaac.earthdata.nasa.gov/s3credentials} | \
