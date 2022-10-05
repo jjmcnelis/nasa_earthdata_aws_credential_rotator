@@ -30,6 +30,12 @@ aws_session_token = ..................
 
 Redirect the stdout to a file and replace yours in ~/.aws/credentials or elsewhere. All profiles are retained in the output.
 
+The tokens store for the 'edl' profile will expire periodically. Give the profile name as an argument when using s3 apis, e.g. sync files from a bucket with aws cli like this:
+
+```bash
+aws --profile edl s3 sync s3://podaac-ops-cumulus-protected/JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/ ./
+```
+
 **Alias the script to simplify usage:**
 
 ```bash
