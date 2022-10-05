@@ -3,12 +3,14 @@ Retrieve temporary credentials provisioned by NASA Earthdata for s3 bucket acces
 
 ### Usage
 
+The shell script will exit immediately if local file ~/.netrc does not contain 'urs.earthdata.nasa.gov'.
+
 ```bash
 sh awsedl.sh <1: credentials file, e.g. '~/.aws/credentials'> \
              <2: nasa daac s3 credentials endpoint, e.g. 'https://archive.podaac.earthdata.nasa.gov/s3credentials'> \
              <3: local aws profile name/alias, e.g. 'edl'>
 ```
-
+s3 credentials for the PO.DAAC are installed by default. The default profile name is 'edl'.
 ```
 $ ./awsedl.sh
 ```
@@ -28,13 +30,13 @@ aws_session_token = ..................
 
 Redirect the stdout to a file and replace yours in ~/.aws/credentials or elsewhere. All profiles are retained in the output.
 
-
-**Alias the script like this to simplify usage:**
+**Alias the script to simplify usage:**
 
 ```bash
 alias awsedl='touch ~/.aws/credentials && mv ~/.aws/credentials ~/.aws/credentials.bak && sh ~/.local/bin/awsedl.sh ~/.aws/credentials.bak > ~/.aws/credentials && echo "$(grep edl ~/.aws/credentials -A 6 | grep expiration)"'
 ```
 
 Important notes about the alias example above:
-* Use at your own risk. It replaces`~/.aws/credentials` and keeps a backup of the previous version at `~/.aws/credentials.bak`.
+* Use at your own risk. 
+* It replaces`~/.aws/credentials` and keeps a backup of the previous version at `~/.aws/credentials.bak`.
 * It expects `awsedl.sh` to live inside `~/.local/bin`.
