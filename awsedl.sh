@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if grep -q "urs.earthdata.nasa.gov" "${HOME}/.netrc"
 then
     [[ -f $1 ]] && printf "$(sed -e "/\[${3:-"edl"}\]/,+6d" "$1")\n\n"

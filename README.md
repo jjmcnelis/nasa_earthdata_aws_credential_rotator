@@ -36,6 +36,16 @@ The tokens store for the 'edl' profile will expire periodically. Give the profil
 aws --profile edl s3 sync s3://podaac-ops-cumulus-protected/JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/ ./
 ```
 
+**Install the script inside your ec2:**
+
+```bash
+# Download script into ~/.local/bin/awsedl, make it executable:
+mkdir -p ~/.local/bin/ && curl -s -o ~/.local/bin/awsedl https://raw.githubusercontent.com/jjmcnelis/nasa_earthdata_aws_credential_rotator/main/awsedl.sh && chmod +x ~/.local/bin/awsedl
+
+# Add ~/.local/bin to path variable if not already there:
+[[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && PATH="$HOME/.local/bin:${PATH}"
+```
+
 **Alias the script to simplify usage:**
 
 ```bash
