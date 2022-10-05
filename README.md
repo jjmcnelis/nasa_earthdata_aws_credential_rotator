@@ -3,12 +3,38 @@ Retrieve temporary credentials provisioned by NASA Earthdata for s3 bucket acces
 
 ### Usage
 
-An alias like this one can simplify the usage of [`awsedl.sh`](awsedl.sh).
+```bash
+sh awsedl.sh <1: credentials file, e.g. '~/.aws/credentials'> \
+             <2: nasa daac s3 credentials endpoint, e.g. 'https://archive.podaac.earthdata.nasa.gov/s3credentials'> \
+             <3: local aws profile name/alias, e.g. 'edl'>
+```
+
+```
+$ ./awsedl.sh
+```
+
+yields
+
+```
+...
+[edl]
+output = json
+region = us-west-2
+aws_access_key_id = ...
+aws_secret_access_key = ......
+aws_session_token = ..................
+#expiration = 2022-10-05 02:54:08+00:00
+```
+
+Redirect the stdout to a file and replace yours in ~/.aws/credentials or elsewhere. All profiles are retained in the output.
+
+
+**Alias the script like this to simplify usage:**
 
 ```bash
 alias awsedl='touch ~/.aws/credentials && mv ~/.aws/credentials ~/.aws/credentials.bak && sh ~/.local/bin/awsedl.sh ~/.aws/credentials.bak > ~/.aws/credentials && echo "$(grep edl ~/.aws/credentials -A 6 | grep expiration)"'
 ```
 
 Important notes about the alias example above:
+* Use at your own risk. It replaces`~/.aws/credentials` and keeps a backup of the previous version at `~/.aws/credentials.bak`.
 * It expects `awsedl.sh` to live inside `~/.local/bin`.
-* Use caution! The file at `~/.aws/credentials` will be replaced; however, the alias makes a backup of the previous version at `~/.aws/credentials.bak`.
