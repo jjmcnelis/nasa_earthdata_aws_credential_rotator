@@ -43,7 +43,7 @@ curl -s -o ~/.local/bin/awsedl https://raw.githubusercontent.com/jjmcnelis/nasa_
 **Alias to simplify token refresh inside your ~/.aws/credentials file:**
 
 ```bash
-alias awsedld='mkdir -p ~/.aws && touch ~/.aws/credentials && mv ~/.aws/credentials ~/.aws/credentials.bak && bash ~/.local/bin/awsedl ~/.aws/credentials.bak > ~/.aws/credentials && echo "$(grep edl ~/.aws/credentials -A 6 | grep expiration)"'
+alias awsedld="mkdir -p ~/.aws && touch ~/.aws/credentials && mv ~/.aws/credentials ~/.aws/credentials.bak && bash ~/.local/bin/awsedl ~/.aws/credentials.bak | sed '/^$/d' > ~/.aws/credentials && grep edl ~/.aws/credentials -A 6 | grep expiration"
 ```
 
 Important notes about the alias example above:
