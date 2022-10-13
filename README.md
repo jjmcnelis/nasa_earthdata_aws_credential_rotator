@@ -28,30 +28,33 @@ aws_session_token = ..................
 #expiration = 2022-10-05 02:54:08+00:00
 ```
 
-Redirect the stdout to a file and replace yours in ~/.aws/credentials or elsewhere. All profiles are retained in the output. The edl token will expire periodically. 
+Redirect the stdout to a file and replace yours in ~/.aws/credentials or elsewhere.
+
+**Install script inside your ec2 instance:**
+
+```bash
+# a) create ~/.local/bin directory, if necessary, and add it to user $PATH variable:
+mkdir -p ~/.local/bin/ && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && PATH="$HOME/.local/bin:${PATH}"
+# b) download the awsedl script, and c) make it executable:
+curl -s -o ~/.local/bin/awsedl https://raw.githubusercontent.com/jjmcnelis/nasa_earthdata_aws_credential_rotator/main/awsedl.sh && \
+  chmod +x ~/.local/bin/awsedl
+```
+
+**Alias to simplify token refresh inside your ~/.aws/credentials file:**
+
+```bash
+alias awsedld='mkdir -p ~/.aws && touch ~/.aws/credentials && mv ~/.aws/credentials ~/.aws/credentials.bak && bash ~/.local/bin/awsedl ~/.aws/credentials.bak > ~/.aws/credentials && echo "$(grep edl ~/.aws/credentials -A 6 | grep expiration)"'
+```
+
+Important notes about the alias example above:
+* Existing profiles are retained in the new ~/.aws/credentials file. Use at your own risk. 
+* It replaces`~/.aws/credentials` and keeps a backup of the previous version at `~/.aws/credentials.bak`.
+* It expects `awsedl` to live inside `~/.local/bin`.
+
+**Next steps for user:**
 
 Provide the 'edl' profile when access earthdata/podaac s3 buckest, e.g. sync files from s3 using aws cli like this:
 
 ```bash
 aws --profile edl s3 sync s3://podaac-ops-cumulus-protected/JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/ ./
 ```
-
-**Install the script inside your ec2:**
-
-```bash
-# a) create ~/.local/bin directory, add it to user $PATH, b) download awsedl script, and c) make it executable:
-mkdir -p ~/.local/bin/ && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && PATH="$HOME/.local/bin:${PATH}" && \
-  curl -s -o ~/.local/bin/awsedl https://raw.githubusercontent.com/jjmcnelis/nasa_earthdata_aws_credential_rotator/main/awsedl.sh && \
-  chmod +x ~/.local/bin/awsedl
-```
-
-**Alias the script to simplify usage:**
-
-```bash
-alias awsedld='mkdir -p ~/.aws && touch ~/.aws/credentials && mv ~/.aws/credentials ~/.aws/credentials.bak && sh ~/.local/bin/awsedl ~/.aws/credentials.bak > ~/.aws/credentials && echo "$(grep edl ~/.aws/credentials -A 6 | grep expiration)"'
-```
-
-Important notes about the alias example above:
-* Use at your own risk. 
-* It replaces`~/.aws/credentials` and keeps a backup of the previous version at `~/.aws/credentials.bak`.
-* It expects `awsedl` to live inside `~/.local/bin`.
