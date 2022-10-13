@@ -39,20 +39,19 @@ aws --profile edl s3 sync s3://podaac-ops-cumulus-protected/JASON_CS_S6A_L2_ALT_
 **Install the script inside your ec2:**
 
 ```bash
-# Download script into ~/.local/bin/awsedl, make it executable:
-mkdir -p ~/.local/bin/ && curl -s -o ~/.local/bin/awsedl https://raw.githubusercontent.com/jjmcnelis/nasa_earthdata_aws_credential_rotator/main/awsedl.sh && chmod +x ~/.local/bin/awsedl
-
-# Add ~/.local/bin to path variable if not already there:
-[[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && PATH="$HOME/.local/bin:${PATH}"
+# a) create ~/.local/bin directory, add it to user $PATH, b) download awsedl script, and c) make it executable:
+mkdir -p ~/.local/bin/ && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && PATH="$HOME/.local/bin:${PATH}" && \
+  curl -s -o ~/.local/bin/awsedl https://raw.githubusercontent.com/jjmcnelis/nasa_earthdata_aws_credential_rotator/main/awsedl.sh && \
+  chmod +x ~/.local/bin/awsedl
 ```
 
 **Alias the script to simplify usage:**
 
 ```bash
-alias awsedl='touch ~/.aws/credentials && mv ~/.aws/credentials ~/.aws/credentials.bak && sh ~/.local/bin/awsedl.sh ~/.aws/credentials.bak > ~/.aws/credentials && echo "$(grep edl ~/.aws/credentials -A 6 | grep expiration)"'
+alias awsedld='mkdir -p ~/.aws && touch ~/.aws/credentials && mv ~/.aws/credentials ~/.aws/credentials.bak && sh ~/.local/bin/awsedl ~/.aws/credentials.bak > ~/.aws/credentials && echo "$(grep edl ~/.aws/credentials -A 6 | grep expiration)"'
 ```
 
 Important notes about the alias example above:
 * Use at your own risk. 
 * It replaces`~/.aws/credentials` and keeps a backup of the previous version at `~/.aws/credentials.bak`.
-* It expects `awsedl.sh` to live inside `~/.local/bin`.
+* It expects `awsedl` to live inside `~/.local/bin`.
